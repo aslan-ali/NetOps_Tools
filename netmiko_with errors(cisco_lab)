@@ -1,0 +1,47 @@
+#this is for errors, if we have errors in script, don't stop script,continue and say us error
+
+from getpass import getpass
+from netmiko import ConnectHandler
+from netmiko.ssh_exception import NetMikoTimeoutException
+from paramiko.ssh_exception import SSHException
+from netmiko.ssh_exception import AuthenticationException
+
+username = input('Username: ')
+password = getpass() #encrypt your password
+
+with open('commands_file.txt') as f:
+    commands_list = f.read().splitlines()  #you must create a commands_file where you can write your commands to network devices
+
+with open('devices_file.txt') as f:
+    devices_list = f.read().splitlines()  #you must create a devices_file where you can write IP of your devices, or create a list with ip add for example: '''xxxx, xxxx,xxx'''.strip().splitlines
+
+for devices in devices_list:    #create a loop for your network devices
+    print ('Connecting to device" ' + devices)
+    ip_address = devices #move your devices to ip_address for easy scripting
+    ios_device = {
+        'device_type': 'cisco_ios',
+        'ip': ip_address, 
+        'username': username,
+        'password': password
+    }
+
+    try: #if we have error, script doesn't stop, because we write a lot of errors in this script and say if we have problem continue and show us a error and IP of network devices
+        net_connect = ConnectHandler(**ios_device)
+    except (AuthenticationException):
+        print ('Authentication failure: ' + ip_address)
+        continue
+    except (NetMikoTimeoutException):
+        print ('Timeout to device: ' + ip_address)
+        continue
+    except (EOFError):
+        print ('End of file while attempting device ' + ip_address)
+        continue
+    except (SSHException):
+        print ('SSH Issue. Are you sure SSH is enabled? ' + ip_address)
+        continue
+    except Exception as unknown_error:
+        print ('Some other error: ' + str(unknown_error))
+        continue
+
+    output = net_connect.send_config_set(commands_list)
+    print (output)
