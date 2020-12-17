@@ -1,24 +1,31 @@
-# Compiled Object files
-*.o
-*.obj
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Created by https://www.toptal.com/developers/gitignore/api/windows
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows
 
-# Compiled Static libraries
-*.a
-*.lib
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
 
-# Executables
-*.exe
+# Dump file
+*.stackdump
 
-# DUB
-.dub
-docs.json
-__dummy.html
-docs/
+# Folder config file
+[Dd]esktop.ini
 
-# Code coverage
-*.lst
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# End of https://www.toptal.com/developers/gitignore/api/windows
