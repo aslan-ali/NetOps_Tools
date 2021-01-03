@@ -20,7 +20,7 @@ print(output)
 
 for interface in range(40,50):
     print("Create interface loopback " + str(interface))
-    config_commands=['interface loopback ' + str(interface), 'description  Python_Test_' + str(interface)]
+    config_commands=['interface loopback ' + str(interface), 'description  Python_Test_' + str(interface), 'ip add 1.1.1.' + str(interface) + ' 255.255.255.255']
     output=net_connect.send_config_set(config_commands)
     print(output)
     
