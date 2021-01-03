@@ -1,0 +1,26 @@
+from netmiko import ConnectHandler
+import getpass
+
+username=input('Username: ')
+password=getpass.getpass()
+secret='cisco'
+
+cisco_ios={
+        "device_type": "cisco_ios",
+        "ip": "192.168.0.253",
+        "username": username,
+        "password" : password,
+        "secret" : 'cisco'
+}
+
+net_connect=ConnectHandler(**cisco_ios)
+net_connect.enable()
+output=net_connect.send_command('sh ip int br | exc un ')
+print(output)
+
+for interface in range(40,50):
+    print("Create interface loopback " + str(interface))
+    config_commands=['interface loopback ' + str(interface), 'description  Python_Test_' + str(interface)]
+    output=net_connect.send_config_set(config_commands)
+    print(output)
+    
