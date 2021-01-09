@@ -1,0 +1,19 @@
+Ansible-vault create encryption.yml
+Vault password: password for example
+Confirm : password for example
+---
+
+Vault_ansible_password: cisco
+Vault_ansible_become_password: cisco
+
+#after we do this:
+
+#nano for_access.yml
+---
+
+Ansible_network_os: ios
+Ansible_user: cisco
+Ansible_become: yes
+Ansible_become_method: enable
+Ansible_become_password: "{{ vault_ansible_become_password }}"
+Ansible_password: " {{ vault_ansible_password }}"
