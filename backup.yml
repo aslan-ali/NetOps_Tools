@@ -1,0 +1,11 @@
+---
+- name: First Play
+  hosts: cisco_routers
+  gather_facts: False
+  connection: local
+
+  tasks:
+
+    - name: Backup running-config
+      ios_config:
+        backup: yes
