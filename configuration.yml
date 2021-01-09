@@ -1,0 +1,16 @@
+---
+- name: First Play
+  hosts: cisco_routers
+  gather_facts: False
+  connection: local
+
+  tasks:
+
+    - name: First Task
+      ios_command:
+        commands: sh ip int br | exc un
+      register: output
+      
+    - name: print output
+      debug:
+        var: output.stdout_lines
