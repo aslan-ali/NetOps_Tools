@@ -1,0 +1,43 @@
+---
+
+- name: Run cfg commands
+  hosts: 192.168.0.252
+  
+  tasks:
+  
+    - name: Run config
+      ios_config:
+        parents:
+          - interface loopback0
+        commands:
+          - ip add 8.8.8.8 255.255.255.255
+          - router ospf 1
+          - router-id 8.8.8.8
+          - network 192.168.0.252 0.0.0.0 area 0
+          - network 8.8.8.8 0.0.0.0 area 0
+      register: ospf_debug
+      
+    - name: print ospf
+      debug: var=ospf_debug.updates
+      when: ospf_debug.changed
+          
+- name: Run cfg commands2
+  hosts: 192.168.0.253
+  
+  tasks:
+  
+    - name: Runconfig
+      ios_config:
+        parents:
+          - interface loopback1
+        commands:
+          - ip add 6.6.6.6 255.255.255.255
+          - router ospf 1
+          - router-id 6.6.6.6
+          - network 192.168.0.253 0.0.0.0 area 0
+          - network 6.6.6.6 0.0.0.0 area 0
+      register: ospf_debug
+      
+    - name: print ospf
+      debug: var=ospf_debug.updates
+      when: ospf_debug.changed
