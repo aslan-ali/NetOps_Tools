@@ -1,0 +1,16 @@
+public_ip=input("Public IP: ")
+private_ip=input("Private IP: ")
+
+
+
+print("interface gigabitethernet0/1" + "\n" +  f"ip address {public_ip} 255.255.255.0" + "\n" + "no shutdown")
+print("interface gigabitethernet0/0" + "\n" + f"ip address {private_ip} 255.255.255.0" + "\n" + "no shutdown") 
+
+print("============Network Configuration==================")
+print("============Routing for Public==================")
+
+print(f"ip route {public_ip} 255.255.255.255 85.132.88.1")
+
+print("============Routing For Private=============")
+
+print("router ospf 1" + "\n" + f"network {private_ip} 0.0.0.0 area 0" + "\n" + "ispf")
