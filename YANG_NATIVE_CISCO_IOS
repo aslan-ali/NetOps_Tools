@@ -1,0 +1,22 @@
+import json
+import requests
+from requests.auth import HTTPBasicAuth as HP
+
+
+AUTH=HP("developer","C1sco12345")
+MEDIA_TYPE="application/yang-data+json"
+HEADERS={"Accept": MEDIA_TYPE,"Content": MEDIA_TYPE}
+
+url="https://10.10.20.48/restconf/data/Cisco-IOS-XE-native:native"
+
+def get_requests(url):
+    response=requests.get(url, auth=AUTH, headers=HEADERS, verify=False)
+    print("API", url)
+    print(response.status_code)
+    if response.status_code in [200,202,204]:
+        print("Successful")
+    else:
+        print("Error in API Request")
+    print(response.text)
+    
+get_requests(url)
