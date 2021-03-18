@@ -7,7 +7,8 @@ AUTH=HP("developer","C1sco12345")
 MEDIA_TYPE="application/yang-data+json"
 HEADERS={"Accept": MEDIA_TYPE,"Content": MEDIA_TYPE}
 
-url="https://10.10.20.48/restconf/data/Cisco-IOS-XE-native:native"
+url="https://10.10.20.48/restconf/data/Cisco-IOS-XE-native:native"               #for small information about ios xe you can add for example ?depth=1
+                                                                                  #https://10.10.20.48/restconf/data/Cisco-IOS-XE-native:native?depth=1            
 
 def get_requests(url):
     response=requests.get(url, auth=AUTH, headers=HEADERS, verify=False)
