@@ -21,13 +21,14 @@ for devices in devices_list:
     net_connect = NetDevOps(**ios_device)
     net_connect.enable()
     print('\n Initiate Backup Configuration \n')
+    hostname=net_connect.find_prompt()
     output=net_connect.send_command('show run')
     print(output)
 
     
     
 
-    file_backup=open('CISCO_' + ip_address_of_device + '_' + str(realtime) + '.txt', 'w')
+    file_backup=open(hostname + '_' + ip_address_of_device + '_' + str(realtime) + '.txt', 'w')
     file_backup.write(output)
     file_backup.close()
     print("===Finished Backup's NetDevOps===")
