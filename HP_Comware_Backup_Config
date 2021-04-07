@@ -1,0 +1,37 @@
+from netmiko import ConnectHandler
+import datetime
+from netmiko.cisco_base_connection import CiscoSSHConnection
+from netmiko.hp import HPProcurveSSH, HPProcurveTelnet, HPComwareSSH, HPComwareTelnet
+
+
+realtime = datetime.datetime.now().strftime("%Y.%m.%d_%H-%M-%S")
+with open('campus.lines') as f:         
+    devices_list = f.read().splitlines()                               
+
+def enable(self, *args, **kwargs):
+    return super(HPComwareSSH, self).enable(check_string='super')
+
+
+for devices in devices_list:                                               
+    print ('Connecting to device" ' + devices)
+    ip_address_of_device = devices
+    hp_comware = {
+        'device_type': 'hp_comware',
+        'ip': ip_address_of_device,
+        'username': 'admin',
+        'password': 'xxxxxxxxxx'
+        }
+    
+    net_connect = ConnectHandler(**hp_comware)
+    
+    print('\n Initiate Backup Configuration \n')
+    devnet=net_connect.write_channel('super\nxxxxxxxxxx\n')
+    output=net_connect.send_command_timing("screen-length disable")
+    output=net_connect.send_command_timing("dis cur")
+    print(output)
+    
+
+    file_backup=open('HP_' + ip_address_of_device + '_' + str(realtime) + '.txt', 'w')
+    file_backup.write(output)
+    file_backup.close()
+    print("===Finished Backup's NetDevOps===")
