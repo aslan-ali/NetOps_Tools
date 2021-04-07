@@ -32,7 +32,7 @@ for devices in devices_list:
     print(output)
     
 
-    file_backup=open(hostname.strip("<>") + '_' + ip_address_of_device + '_' + str(realtime) + '.txt', 'w')
+    file_backup=open(hostname.strip("<>") + '_' + ip_address_of_device + '_' + str(realtime) + '.txt', 'w', encoding='utf8')
     file_backup.write(output)
     file_backup.close()
     print("===Finished Backup's NetDevOps===")
