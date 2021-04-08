@@ -1,10 +1,14 @@
+
 from netmiko import ConnectHandler as NetDevOps
-import os
 import datetime
 import time
+from netmiko import ConnectHandler
+from netmiko.ssh_exception import NetMikoTimeoutException
+from paramiko.ssh_exception import SSHException
+from netmiko.ssh_exception import AuthenticationException
                        
 realtime = datetime.datetime.now().strftime("%Y.%m.%d_%H-%M-%S")
-with open('netdevice.txt') as f:         
+with open('netdevice.list') as f:         
     devices_list = f.read().splitlines()                               
 
 for devices in devices_list:                                               
@@ -17,19 +21,32 @@ for devices in devices_list:
         'password': 'cisco',
         'secret' : 'cisco'
     }
+    try:
+        net_connect = NetDevOps(**ios_device)
+    except (AuthenticationException):
+        print ('Authentication failure: ' + ip_address_of_device)
+        continue
+    except (NetMikoTimeoutException):
+        print ('Timeout to device: ' + ip_address_of_device)
+        continue
+    except (EOFError):
+        print ('End of file while attempting device ' + ip_address_of_device)
+        continue
+    except (SSHException):
+        print ('SSH Issue. Are you sure SSH is enabled? ' + ip_address_of_device)
+        continue
+    except Exception as unknown_error:
+        print ('Some other error: ' + str(unknown_error))
+        continue
     
-    net_connect = NetDevOps(**ios_device)
     net_connect.enable()
     print('\n Initiate Backup Configuration \n')
     hostname=net_connect.find_prompt()
     output=net_connect.send_command('show run')
     print(output)
+ 
 
-    
-    
-
-    file_backup=open(hostname + '_' + ip_address_of_device + '_' + str(realtime) + '.txt', 'w')
+    file_backup=open(hostname.strip("#") + '_' + ip_address_of_device + '_' + str(realtime) + '.txt', 'w')
     file_backup.write(output)
     file_backup.close()
     print("===Finished Backup's NetDevOps===")
-    
