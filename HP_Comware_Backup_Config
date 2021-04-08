@@ -1,3 +1,6 @@
+from netmiko.ssh_exception import NetMikoTimeoutException
+from paramiko.ssh_exception import SSHException
+from netmiko.ssh_exception import AuthenticationException
 from netmiko import ConnectHandler
 import datetime
 from netmiko.cisco_base_connection import CiscoSSHConnection
@@ -19,13 +22,31 @@ for devices in devices_list:
         'device_type': 'hp_comware',
         'ip': ip_address_of_device,
         'username': 'admin',
-        'password': 'xxxxxxxxxx'
+        'password': 'admin'
         }
     
-    net_connect = ConnectHandler(**hp_comware)
-    
+    try:
+        net_connect = ConnectHandler(**hp_comware)
+    except (AuthenticationException):
+        print('Authentication failure: ' + ip_address_of_device)
+        continue
+    except (NetMikoTimeoutException):
+        print ('Timeout to device: ' + ip_address_of_device)
+        continue
+    except (EOFError):
+        print ('End of file while attempting device ' + ip_address_of_device)
+        continue
+    except (SSHException):
+        print ('SSH Issue. Are you sure SSH is enabled? ' + ip_address_of_device)
+        continue
+    except Exception as unknown_error:
+        print ('Some other error: ' + str(unknown_error))
+        continue
+
+
+        
     print('\n Initiate Backup Configuration \n')
-    devnet=net_connect.write_channel('super\nxxxxxxxxxx\n')
+    devnet=net_connect.write_channel('super\nxxxxxxxxx\n')
     output=net_connect.send_command_timing("screen-length disable")
     hostname=net_connect.find_prompt()
     output=net_connect.send_command_timing("dis cur")
@@ -36,3 +57,4 @@ for devices in devices_list:
     file_backup.write(output)
     file_backup.close()
     print("===Finished Backup's NetDevOps===")
+
