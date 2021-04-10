@@ -1,0 +1,129 @@
+from netmiko.ssh_exception import NetMikoTimeoutException
+from paramiko.ssh_exception import SSHException
+from netmiko.ssh_exception import AuthenticationException
+from netmiko import ConnectHandler
+import datetime
+from netmiko.cisco_base_connection import CiscoSSHConnection
+from netmiko.hp import HPProcurveSSH, HPProcurveTelnet, HPComwareSSH, HPComwareTelnet
+
+
+realtime = datetime.datetime.now().strftime("%Y.%m.%d_%H-%M-%S")
+
+with open('nexus.lines','r') as tools:
+    output= tools.readlines()
+for ip_add in output:
+    print("Connecting to device " + ip_add)
+    cisco_ios= {
+        "device_type": "cisco_ios",
+        "ip": ip_add,
+        "username": "cisco",
+        "password": "C1sco",
+        "secret": "Cisco"
+        }
+    try:
+        net_connect = ConnectHandler(**cisco_ios)
+    except (AuthenticationException):
+        print('Authentication failure: ' + ip_add)
+        continue
+    except (NetMikoTimeoutException):
+        print ('Timeout to device: ' + ip_add)
+        continue
+    except (EOFError):
+        print ('End of file while attempting device ' + ip_add)
+        continue
+    except (SSHException):
+        print ('SSH Issue. Are you sure SSH is enabled? ' + ip_add)
+        continue
+    except Exception as unknown_error:
+        print ('Some other error: ' + str(unknown_error))
+        continue
+
+    print('\n Initiate Backup Configuration \n')
+    net_connect.enable()
+    terminal=net_connect.send_command("terminal length 0")
+    output=net_connect.send_command("show run")
+    print(output)
+    hostname=net_connect.find_prompt()
+    nexus_backup=open(hostname.strip("#") + "_" + ip_add.strip("\n") + "_" + str(realtime) + ".txt", "w", encoding='utf8')
+    nexus_backup.write(output)
+    nexus_backup.close()
+    print("======Backup, that's all =============")
+
+
+
+
+with open('netops.lines') as f:         
+    devices_list = f.read().splitlines()                               
+
+for devices in devices_list:
+    print ('Connecting to device" ' + devices)
+    ip_address_of_device = devices
+    if ip_address_of_device=="192.168.0.205":
+        hp_procurve= {
+            'device_type': 'hp_procurve',
+            'ip': ip_address_of_device,
+            'username': 'admin',
+            'password': 'admin'
+            }
+        try:
+            net_connect = ConnectHandler(**hp_procurve)
+        except (AuthenticationException):
+            print('Authentication failure: ' + ip_address_of_device)
+            continue
+        except (NetMikoTimeoutException):
+            print ('Timeout to device: ' + ip_address_of_device)
+            continue
+        except (EOFError):
+            print ('End of file while attempting device ' + ip_address_of_device)
+            continue
+        except (SSHException):
+            print ('SSH Issue. Are you sure SSH is enabled? ' + ip_address_of_device)
+            continue
+        except Exception as unknown_error:
+            print ('Some other error: ' + str(unknown_error))
+            continue
+
+        print('\n Initiate Backup Configuration \n')
+        terminal=net_connect.send_command("terminal length 1000")
+        output=net_connect.send_command("show run")
+        print(output)
+        hostname=net_connect.find_prompt()
+        aruba_backup=open(hostname.strip("#") + "_" + ip_address_of_device + "_" + str(realtime) + ".txt", "w", encoding='utf8')
+        aruba_backup.write(output)
+        aruba_backup.close()
+        print("=====Finish Aruba's Backup====")
+   
+    else:
+        hp_comware = {
+            'device_type': 'hp_comware',
+            'ip': ip_address_of_device,
+            'username': 'cisco',
+            'password': 'cisco'
+            }
+        try:
+            net_connect = ConnectHandler(**hp_comware)
+        except (AuthenticationException):
+            print('Authentication failure: ' + ip_address_of_device)
+            continue
+        except (NetMikoTimeoutException):
+            print ('Timeout to device: ' + ip_address_of_device)
+            continue
+        except (EOFError):
+            print ('End of file while attempting device ' + ip_address_of_device)
+            continue
+        except (SSHException):
+            print ('SSH Issue. Are you sure SSH is enabled? ' + ip_address_of_device)
+            continue
+        except Exception as unknown_error:
+            print ('Some other error: ' + str(unknown_error))
+            continue
+
+        devnet=net_connect.write_channel('super\ncisco\n')
+        output=net_connect.send_command_timing("screen-length disable")
+        output=net_connect.send_command_timing("dis cur")
+        print(output)
+        hostname=net_connect.find_prompt()
+        file_backup=open(hostname.strip("<>") + '_' + ip_address_of_device + '_' + str(realtime) + '.txt', 'w', encoding='utf8')
+        file_backup.write(output)
+        file_backup.close()
+        print("===Finished Backup's NetDevOps===")
