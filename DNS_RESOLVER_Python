@@ -1,0 +1,12 @@
+import socket
+
+with open('dns_resolve.txt') as f:
+       for line in f:
+              print(socket.gethostbyname(line.strip()))
+
+
+#You must create dns_resolver.txt where you can add url for resolving
+
+#example.com
+#cisco.com
+#google.com and oth.
