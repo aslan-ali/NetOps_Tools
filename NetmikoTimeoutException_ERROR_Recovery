@@ -1,4 +1,9 @@
 
     
-    output = net_connect.send_config_set(script_list, cmd_verify=False, exit_config_mode=False, delay_factor=4)
+    output = net_connect.send_config_set(script_list, cmd_verify=False, exit_config_mode=False, delay_factor=4) 
     print(output)
+
+
+
+cmd_verify=False, exit_config_mode=False, delay_factor=4  
+#this commands help you avoid error of NetmikoTimeoutException
