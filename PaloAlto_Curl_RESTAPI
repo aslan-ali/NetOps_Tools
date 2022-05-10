@@ -1,3 +1,5 @@
 curl -k -X GET "https://192.168.1.1/restapi/9.0/Objects/Addresses?location=vsys&vsys=vsys1&key=xxxxxxxxxxxxxxxxxxxx" | jq
 #list of addresses
 
+curl -k -X GET "https://192.168.1.1/restapi/9.0/Objects/AddressGroups?location=vsys&vsys=vsys1&key=xxxxxxxxxxxxxxxxxxxxxxx" | jq
+#list of addressgroups , we can find everything in restapi-doc
