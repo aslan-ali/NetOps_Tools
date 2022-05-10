@@ -1,0 +1,15 @@
+curl -k -X GET "https://192.168.1.1/api/?type=keygen&user=Your_Username&password=Your_Password" | xmllint --format -
+#we get a API key
+
+#after that
+
+curl -k -X GET "https://192.168.1.1/api/?type=op&cmd=<show><system><info></info></system></show>&key=xxxxxxxxxxxxxxxxxxxxx==" | xmllint --format -
+
+#after cmd we can write commands from XML_API_BROWSER.
+
+
+
+
+#forbackup
+
+curl -kG "https://192.168.1.1/api/?type=export&category=configuration&key=<api_key>" > c:\running-config_%date%.xml
