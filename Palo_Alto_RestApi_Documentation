@@ -1,0 +1,17 @@
+PAN-OS REST API
+
+Curl –X method https://firewall/restapi/pan-os_version/resource_uri?parameters&key=apikey
+
+method : The HTTP method to launch the request
+
+GET: Read the resource
+POST: Create the resource
+DELETE: Delete the resource
+Firewall: Ip address of firewall
+Pan-os version: 9.0, 9.1 …
+Resource_uri : Path of the resource to deal with
+/restapi/9.0/Objects/Addresses
+/restapi/9.0/Objects/Services
+/restapi/9.0/Policies/SecurityRules
+Parameters: name, vsys location & API Key
+
