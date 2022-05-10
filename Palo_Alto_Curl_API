@@ -8,8 +8,10 @@ curl -k -X GET "https://192.168.1.1/api/?type=op&cmd=<show><system><info></info>
 #after cmd we can write commands from XML_API_BROWSER.
 
 
-
-
 #forbackup
 
 curl -kG "https://192.168.1.1/api/?type=export&category=configuration&key=<api_key>" > c:\running-config_%date%.xml
+
+
+#create address in palo alto
+curl --globoff -k -X GET "https://xxxxxxxx/api/?type=config&action=set&xpath=/config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/address/entry[@name='new_api_created']&element=<ip-netmask>192.168.10.0/24</ip-netmask>&key=xxxxxxxxxxxxxxxxxxxxxx" | xmllint --format -
