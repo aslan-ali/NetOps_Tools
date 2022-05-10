@@ -15,3 +15,6 @@ curl -kG "https://192.168.1.1/api/?type=export&category=configuration&key=<api_k
 
 #create address in palo alto
 curl --globoff -k -X GET "https://xxxxxxxx/api/?type=config&action=set&xpath=/config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/address/entry[@name='new_api_created']&element=<ip-netmask>192.168.10.0/24</ip-netmask>&key=xxxxxxxxxxxxxxxxxxxxxx" | xmllint --format -
+
+#create services in palo alto
+curl --globoff -k -X GET "https://xxxxxxxx/api/?type=config&action=set&xpath=/config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/service/entry[@name='TCP_8899']&element=<protocol><tcp><port>8899</port></tcp></protocol>&key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" | xmllint --format -
