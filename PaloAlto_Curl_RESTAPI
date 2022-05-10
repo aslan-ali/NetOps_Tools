@@ -1,3 +1,8 @@
+https://192.168.1.1/restapi-doc/
+
+GET Examples
+
+
 curl -k -X GET "https://192.168.1.1/restapi/9.0/Objects/Addresses?location=vsys&vsys=vsys1&key=xxxxxxxxxxxxxxxxxxxx" | jq
 #list of addresses
 
@@ -6,3 +11,7 @@ curl -k -X GET "https://192.168.1.1/restapi/9.0/Objects/AddressGroups?location=v
 
 curl -k -X GET "https://192.168.1.1/restapi/9.0/Policies/SecurityRules?location=vsys&vsys=vsys1&key=xxxxxxxxxxxxxxxxxxxxx" | jq
 #list of security rules
+
+
+POST Examples ( For create rules and objects)
+
