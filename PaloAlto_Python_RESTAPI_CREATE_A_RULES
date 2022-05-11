@@ -13,8 +13,8 @@ if __name__ == '__main__':
   
   #---------------------------------------------------------------------------------------------------------------------------------------------------
   # This is the section where you can set your api_key , firewalln IP  and path for the CSV file
-  api_key       = "PUT_YOUR_API_KEY_HERE"
-  firewall_ip   = "PUT_YOUR_FW_IP_HERE"
+  api_key       = "xxxxxxxxxxxxxxxxxxxxx"
+  firewall_ip   = "xxxxxxx"
   rules_file    = "csv_rules.csv"
   #---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -44,10 +44,13 @@ try:
     destination_ip    = row[4].split(" ")    
     application       = row[5].split(" ")    
     service           = row[6].split(" ")   
-    action            = row[7] 
+    action            = row[7]
+    rule_type         = row[8].split(" ")
+    log_setting       = row[9].split(" ")
+    disabled          = row[10].split(" ")
     
     # This is the JSON data & URI . The structure can be retrieve from the rest-api doc
-    json_data         = {"entry": { "@name": rule_name, "from": {"member": source_zone}, "source": {"member": source_ip}, "to": {"member": destination_zone}, "destination": {"member": destination_ip}, "application": {"member": application}, "service": {"member": service}, "action":action } }
+    json_data         = {"entry": { "@name": rule_name, "from": {"member": source_zone}, "source": {"member": source_ip}, "to": {"member": destination_zone}, "destination": {"member": destination_ip}, "application": {"member": application}, "service": {"member": service}, "action":action,"rule-type":rule_type,"log-setting":log_setting,"disabled":disabled  } }
     uri               = "/restapi/9.0/Policies/SecurityRules?location=vsys&vsys=vsys1&name="+rule_name+"&key="+api_key
     #-----------------------------------------------------------------------------------------------------------
 
